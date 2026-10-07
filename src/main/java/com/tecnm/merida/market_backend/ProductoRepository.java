@@ -1,22 +1,64 @@
 package com.tecnm.merida.market_backend;
 
+import com.tecnm.merida.market_backend.domain.Product;
+import com.tecnm.merida.market_backend.domain.repository.ProductRepository;
 import com.tecnm.merida.market_backend.persistence.crud.ProductoCrudRepository;
-import com.tecnm.merida.market_backend.persistence.entity.Producto;
+import com.tecnm.merida.market_backend.persistence.mapper.ProductMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 @Repository
-public class ProductoRepository {
-private final ProductoCrudRepository productoCrudRepository;
+public class ProductoRepository implements ProductRepository {
+    private final ProductoCrudRepository productoCrudRepository;
+    private final ProductMapper productMapper;
 
-public ProductoRepository(ProductoCrudRepository productoCrudRepository) {
-    this.productoCrudRepository = productoCrudRepository;
-}
+    public ProductoRepository(
+            ProductoCrudRepository productoCrudRepository,
+            ProductMapper productMapper
+    ) {
+        this.productoCrudRepository = productoCrudRepository;
+        this.productMapper = productMapper;
+    }
 
-//SELECT * FROM Productos
-public List<Producto> getAll(){
-    //Vamos a "castear"
-    return (List<Producto>) productoCrudRepository.findAll();
-}
+    @Override
+    public List<Product> getAll() {
+        return productMapper.toProducts(StreamSupport
+                .stream(productoCrudRepository.findAll().spliterator(), false)
+                .toList());
+    }
+
+    @Override
+    public List<Product> getByCategory(int categoryId) {
+        return productMapper.toProducts(
+                productoCrudRepository.findByIdCategoriaOrderByNombreAsc(categoryId)
+        );
+    }
+
+    @Override
+    public List<Product> getScarceProducts(int quantity) {
+        return productoCrudRepository
+                .findByCantidadStockLessThanAndEstado(quantity, true)
+                .map(productMapper::toProducts)
+                .orElseGet(List::of);
+    }
+
+    @Override
+    public Optional<Product> getProduct(int productId) {
+        return productoCrudRepository.findById(productId).map(productMapper::toProduct);
+    }
+
+    @Override
+    public Product save(Product product) {
+        return productMapper.toProduct(
+                productoCrudRepository.save(productMapper.toProducto(product))
+        );
+    }
+
+    @Override
+    public void delete(int productId) {
+        productoCrudRepository.deleteById(productId);
+    }
 }
