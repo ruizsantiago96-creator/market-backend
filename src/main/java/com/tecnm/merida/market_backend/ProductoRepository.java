@@ -31,18 +31,17 @@ public class ProductoRepository implements ProductRepository {
     }
 
     @Override
-    public List<Product> getByCategory(int categoryId) {
-        return productMapper.toProducts(
+    public Optional<List<Product>> getByCategory(int categoryId) {
+        return Optional.of(productMapper.toProducts(
                 productoCrudRepository.findByIdCategoriaOrderByNombreAsc(categoryId)
-        );
+        ));
     }
 
     @Override
-    public List<Product> getScarceProducts(int quantity) {
+    public Optional<List<Product>> getScarceProducts(int quantity) {
         return productoCrudRepository
                 .findByCantidadStockLessThanAndEstado(quantity, true)
-                .map(productMapper::toProducts)
-                .orElseGet(List::of);
+                .map(productMapper::toProducts);
     }
 
     @Override
