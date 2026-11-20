@@ -45,6 +45,13 @@ public class ClientController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedClient);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Client> update(@PathVariable int id, @RequestBody Client client) {
+        return clientService.update(id, client)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
         if (!clientService.delete(id)) {

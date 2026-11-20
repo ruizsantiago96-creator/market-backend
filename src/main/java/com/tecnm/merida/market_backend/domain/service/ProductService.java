@@ -32,6 +32,10 @@ public class ProductService {
         return productRepository.save(product);
     }
 
+    public Optional<Product> update(int productId, Product product){
+        return productRepository.update(productId, product);
+    }
+
     public boolean delete(int productId){
         if (getProduct(productId).isPresent()){
             productRepository.delete(productId);

@@ -28,6 +28,19 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
+    public Optional<Client> update(int clientId, Client client) {
+        return clientRepository.getById(clientId)
+                .map(existingClient -> {
+                    existingClient.setFirstName(client.getFirstName());
+                    existingClient.setLastName(client.getLastName());
+                    existingClient.setCellPhone(client.getCellPhone());
+                    existingClient.setAddress(client.getAddress());
+                    existingClient.setEmail(client.getEmail());
+
+                    return clientRepository.save(existingClient);
+                });
+    }
+
     public boolean delete(int clientId) {
         if (clientRepository.getById(clientId).isEmpty()) {
             return false;
