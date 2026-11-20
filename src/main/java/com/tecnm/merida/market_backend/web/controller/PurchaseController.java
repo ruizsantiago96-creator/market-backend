@@ -1,12 +1,18 @@
 package com.tecnm.merida.market_backend.web.controller;
 
 import com.tecnm.merida.market_backend.domain.Purchase;
+import com.tecnm.merida.market_backend.domain.PurchaseRequest;
 import com.tecnm.merida.market_backend.domain.service.PurchaseService;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -28,5 +34,15 @@ public class PurchaseController {
     @GetMapping("/client/{clientId}")
     public ResponseEntity<List<Purchase>> getByClient(@PathVariable String clientId) {
         return ResponseEntity.ok(purchaseService.getByClient(clientId).orElseGet(List::of));
+    }
+
+    @PostMapping
+    public ResponseEntity<Purchase> save(@RequestBody PurchaseRequest request) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(purchaseService.save(request));
+        } catch (DataIntegrityViolationException exception) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT,
+                    "The purchase violates a database constraint", exception);
+        }
     }
 }

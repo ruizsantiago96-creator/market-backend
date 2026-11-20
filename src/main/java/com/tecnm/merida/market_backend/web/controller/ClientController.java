@@ -24,7 +24,7 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getById(@PathVariable int id) {
+    public ResponseEntity<Client> getById(@PathVariable String id) {
         return clientService.getById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -32,8 +32,8 @@ public class ClientController {
 
     @PostMapping
     public ResponseEntity<Client> save(@RequestBody Client client) {
-        Integer clientId = client.getClientId();
-        if (clientId == null) {
+        String clientId = client.getClientId();
+        if (clientId == null || clientId.isBlank()) {
             return ResponseEntity.badRequest().build();
         }
 
@@ -46,14 +46,14 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> update(@PathVariable int id, @RequestBody Client client) {
+    public ResponseEntity<Client> update(@PathVariable String id, @RequestBody Client client) {
         return clientService.update(id, client)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
+    public ResponseEntity<Void> delete(@PathVariable String id) {
         if (!clientService.delete(id)) {
             return ResponseEntity.notFound().build();
         }

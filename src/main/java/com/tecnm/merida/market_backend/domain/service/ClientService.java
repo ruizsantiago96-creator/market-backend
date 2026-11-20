@@ -20,7 +20,7 @@ public class ClientService {
         return clientRepository.getAll();
     }
 
-    public Optional<Client> getById(int clientId) {
+    public Optional<Client> getById(String clientId) {
         return clientRepository.getById(clientId);
     }
 
@@ -28,7 +28,7 @@ public class ClientService {
         return clientRepository.save(client);
     }
 
-    public Optional<Client> update(int clientId, Client client) {
+    public Optional<Client> update(String clientId, Client client) {
         return clientRepository.getById(clientId)
                 .map(existingClient -> {
                     existingClient.setFirstName(client.getFirstName());
@@ -41,7 +41,7 @@ public class ClientService {
                 });
     }
 
-    public boolean delete(int clientId) {
+    public boolean delete(String clientId) {
         if (clientRepository.getById(clientId).isEmpty()) {
             return false;
         }

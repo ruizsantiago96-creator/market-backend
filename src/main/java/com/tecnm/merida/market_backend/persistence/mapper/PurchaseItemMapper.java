@@ -23,6 +23,7 @@ public interface PurchaseItemMapper {
             @Mapping(target = "id.idCompra", ignore = true ),
             @Mapping(target = "compra", ignore = true ),
             @Mapping(target = "producto", ignore = true),
+            @Mapping(target = "fecha", ignore = true),
 
     })
     CompraProducto toCompraProducto(PurchaseItem item);

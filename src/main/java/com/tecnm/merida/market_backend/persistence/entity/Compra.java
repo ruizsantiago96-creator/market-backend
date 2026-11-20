@@ -28,11 +28,12 @@ public class Compra {
     //Relación con cliente;
     //Mucho compras para un Cliente
     @ManyToOne
-    @JoinColumn(name = "id_cliente", insertable = false, updatable = false)
+    @JoinColumn(name = "id_cliente", insertable = false, updatable = false,
+            foreignKey = @ForeignKey(name = "fk_compras_cliente"))
     private Cliente cliente;
 
     //Relación con CompraProducto
-    @OneToMany(mappedBy = "compra")
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
     private List<CompraProducto> productos;
 
     public Integer getIdCompra() {

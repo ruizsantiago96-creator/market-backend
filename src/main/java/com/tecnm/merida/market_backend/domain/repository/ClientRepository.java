@@ -9,9 +9,9 @@ public interface ClientRepository {
 
     List<Client> getAll();
 
-    Optional<Client> getById(int clientId);
+    Optional<Client> getById(String clientId);
 
     Client save(Client client);
 
-    void delete(int clientId);
+    void delete(String clientId);
 }

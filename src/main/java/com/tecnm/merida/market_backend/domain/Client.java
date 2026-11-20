@@ -2,18 +2,18 @@ package com.tecnm.merida.market_backend.domain;
 
 public class Client {
 
-    private Integer clientId;
+    private String clientId;
     private String firstName;
     private String lastName;
     private String cellPhone;
     private String address;
     private String email;
 
-    public Integer getClientId() {
+    public String getClientId() {
         return clientId;
     }
 
-    public void setClientId(Integer clientId) {
+    public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 

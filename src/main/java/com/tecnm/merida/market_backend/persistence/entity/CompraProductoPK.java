@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Embeddable
 
@@ -29,5 +30,17 @@ public class CompraProductoPK implements Serializable {
 
     public void setIdProducto(Integer idProducto) {
         this.idProducto = idProducto;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        return this == other || other instanceof CompraProductoPK key
+                && Objects.equals(idCompra, key.idCompra)
+                && Objects.equals(idProducto, key.idProducto);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idCompra, idProducto);
     }
 }

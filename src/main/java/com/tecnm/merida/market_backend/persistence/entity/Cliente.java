@@ -11,7 +11,7 @@ import java.util.List;
 public class Cliente {
 
     @Id
-    private Integer id;
+    private String id;
     private String nombre;
     private String apellidos;
     private String celular;
@@ -23,11 +23,11 @@ public class Cliente {
     @Column(name = "correo_electronico")
     private String correoElectronico;
 
-    public Integer getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
