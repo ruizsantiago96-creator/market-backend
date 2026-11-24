@@ -1,13 +1,11 @@
 package com.tecnm.merida.market_backend.persistence.entity;
 
-import com.google.errorprone.annotations.InlineMeValidationDisabled;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 @Entity
 @Table(name = "clientes")
-
 public class Cliente {
 
     @Id
@@ -17,6 +15,7 @@ public class Cliente {
     private String celular;
     private String direccion;
 
+    @SuppressWarnings("unused") // Hibernate accesses this association directly.
     @OneToMany(mappedBy = "cliente")
     private List<Compra> compras;
 
@@ -69,13 +68,5 @@ public class Cliente {
 
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
-    }
-
-    public List<Compra> getCompras() {
-        return compras;
-    }
-
-    public void setCompras(List<Compra> compras) {
-        this.compras = compras;
     }
 }

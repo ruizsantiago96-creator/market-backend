@@ -18,6 +18,5 @@ public interface ClientMapper {
     Client toClient(Cliente cliente);
 
     @InheritInverseConfiguration
-    @Mapping(target = "compras", ignore = true)
     Cliente toCliente(Client client);
 }
